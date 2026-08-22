@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            max-width:400px;
+        }
+    </style>
+</head>
+             
+<body>
+    <div id="list">テスト</div>
+    <script type="module">
+    const TOKEN="06f85e997eefa31a8f8ac722bc00b634";
+    const query=`
+{
+    collection(handle:"花入-一輪挿し"){
+          title
+          products(first:20){
+            edges{
+                node{
+                    title
+                    handle
+                    featuredImage{url(transform: {maxWidth:400})}
+                    priceRange{minVariantPrice{amount}}
+                }
+            }
+        }  
+    }
+}    
+`; 
+const res = await fetch("https://keichiku-gallery.com/api/2026-07/graphql.json",{
+    method:"POST",
+    headers:{
+            "Content-Type":"application/json",
+            "X-Shopify-Storefront-Access-Token":TOKEN
+},
+    body:JSON.stringify({query})    
+});
+const data = await res.json();
+console.log(data);
+const edges=data.data.collection.products.edges;
+const titles=edges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
+document.getElementById("list").innerHTML=titles.join("");
+    </script>
+</body>
+</html>
