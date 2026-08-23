@@ -3,19 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>取り合わせシュミレーター｜KEICHIKU TARUMI Gallery Shop</title>
-    <style>
+    <title>取り合わせ｜KEICHIKU TARUMI Gallery Shop</title>
+
+    <style> 
         img{
-            max-width:400px;
-            height:auto;
+            width:100%;
+            aspect-ratio:3/4;
+            object-fit:cover;
+            display:block;
+            margin-bottom:8px;            
         }
+
+        main{
+            max-width:1200px;
+            margin:0 auto;
+            padding:24px;
+
+        }
+
+        header{
+            text-align:center;
+            padding:24px;
+            border-bottom:1px solid var(--border-color);
+        }
+
+         header img{
+            width:auto;
+            max-height:60px;
+            aspect-ratio:1/1;
+            object-fit:contain;
+        }
+
+        footer{
+            text-align:center;
+            padding:40px 24px;
+            margin-top:64px;
+            border-top: 1px solid var(--border-color);
+        }
+
+         footer img{
+            text-align: center;
+            width:auto;
+            max-height:150px;
+            aspect-ratio:1/1;
+            object-fit:contain;
+            margin: auto;
+        }
+
+        footer a{
+            font-size:17px;
+            letter-spacing:0.05em;
+            color:var(--text-color);
+            text-decoration:none;
+        }
+
+        footer p{
+            font-size: 16px;
+            margin-top: 16px;
+        }
+        :root{
+            --font-base:'Noto Serif JP',serif;
+            --text-color:#000;
+            --bg-color:#E4E8E7;
+            --border-color:#000;
+        }
+        
+        body{
+            font-family:var(--font-base);
+            line-height:18px;
+            font-weight:400;
+            color:var(--text-color);
+            background:var(--bg-color);
+            max-width:1200px;
+            margin:0 auto;
+            padding:17px;
+        }
+
+        h1{
+            font-size:24px;
+            font-weight:400;
+        }
+
+        h2{
+            font-size:15px;
+            font-weight:400;
+        }
+
+        #vases-list,
+        #plates-list,
+        #bonsai-list{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+            gap:24px;                
+        }
+
+        @media (max-width:768px){
+            #vases-list,
+            #plates-list,
+            #bonsai-list{
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+        #vases-list div,
+         #plates-list div,
+         #bonsai-list div {
+            font-size:13px;
+               line-height:1.8;
+        }
+        .selected{
+            outline:1px solid var(--border-color);
+            outline-offset:8px;
+        }  
+
+        #result{
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:24px;
+        }
+
+        #result div{
+            font-size:16px;
+            line-height:1.8;
+        }
+
+        @media (max-width:768px){
+            #result{
+                gap:12px;
+            }
+        }
+
     </style>
 </head>
              
 <body>
-    <div id="vases-list">読み込み中</div>
-    <div id="plates-list">読み込み中</div>
-    <div id="bonsai-list">読み込み中</div>
+
+    <header>
+        <a href="https://keichiku-gallery.com/">
+            <img src="https://keichiku-gallery.com/cdn/shop/files/9-Photoroom_152x.png?v=1769931843" alt="KEICHIKU TARUMI Gallery Shop">
+        </a>
+    </header>
+
+    <main>
+        <h1>取り合わせ</h1>
+
+        <p>器・敷板・草木の組み合わせをお試しいただけます。</p>
+
+        <h2>花器</h2>
+        <div id="vases-list">読み込み中</div>
+
+        <h2>敷板</h2>
+        <div id="plates-list">読み込み中</div>
+
+        <h2>盆栽・蘭・山野草</h2>
+        <div id="bonsai-list">読み込み中</div>
+
+        <h2>選択した取り合わせ</h2>
+        <div id="result">選択されていません</div>
+    </main>
+
+    <footer>
+        <img src="https://keichiku-gallery.com/cdn/shop/files/sologo-aitools-bgremover_2_520x.png?v=1769957476" alt="KEICHIKU TARUMI Gallery Shop">
+        <a href="https://keichiku-gallery.com/">オンラインショップへ戻る</a>
+        <p>KEICHIKU TARUMI Gallery Shop</p>
+    </footer>
     <script type="module">
     const TOKEN="06f85e997eefa31a8f8ac722bc00b634";
     const query=`
@@ -27,7 +179,7 @@
                 node{   
                     title
                     handle
-                    featuredImage{url(transform: {maxWidth:400})}
+                featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
                 }
             }
@@ -62,6 +214,8 @@
 } 
 
 `; 
+
+//JavaScript
 const res = await fetch("https://keichiku-gallery.com/api/2026-07/graphql.json",{
     method:"POST",
     headers:{
@@ -83,6 +237,79 @@ document.getElementById("plates-list").innerHTML=platesTitles.join("");
 const bonsaiEdges=data.data.bonsai.products.edges;
 const bonsaiTitles=bonsaiEdges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
 document.getElementById("bonsai-list").innerHTML=bonsaiTitles.join("");
+
+let selectedVaseItem=null; //HTML要素
+let selectedVaseData=null; //商品データ
+
+const vasesItems=document.querySelectorAll("#vases-list div");
+vasesItems.forEach((item,index)=>{
+    item.addEventListener("click",()=>{
+        if(selectedVaseItem){
+            selectedVaseItem.classList.remove("selected");
+        }
+        item.classList.add("selected");
+        selectedVaseItem=item;
+        selectedVaseData=vasesEdges[index].node;
+        console.log(selectedVaseData.title);
+        showResult();
+    });
+});
+
+let selectedPlateItem=null; //HTML要素
+let selectedPlateData=null; //商品データ
+
+const platesItems=document.querySelectorAll("#plates-list div");
+platesItems.forEach((item,index)=>{
+    item.addEventListener("click",()=>{
+        if(selectedPlateItem){
+            selectedPlateItem.classList.remove("selected");
+        }
+        item.classList.add("selected");
+        selectedPlateItem=item;
+        selectedPlateData=platesEdges[index].node;
+        console.log(selectedPlateData.title);
+        showResult();
+    });
+});
+
+let selectedBonsaiItem=null; //HTML要素
+let selectedBonsaiData=null; //商品データ
+
+const bonsaiItems=document.querySelectorAll("#bonsai-list div");
+bonsaiItems.forEach((item,index)=>{
+    item.addEventListener("click",()=>{
+        if(selectedBonsaiItem){
+            selectedBonsaiItem.classList.remove("selected");
+        }
+        item.classList.add("selected");
+        selectedBonsaiItem=item;
+        selectedBonsaiData=bonsaiEdges[index].node;
+        console.log(selectedBonsaiData.title);
+        showResult();
+    });
+});
+function showResult(){
+    const item=[
+        selectedVaseData,
+        selectedPlateData,
+        selectedBonsaiData
+    ];
+    const chosen=item.filter((data)=>data !==null);
+    
+    if(chosen.length===0){
+        document.getElementById("result").innerHTML="選択されていません";
+        return;        
+    }
+const html=chosen.map((data)=>`
+    <div>
+        <img src="${data.featuredImage.url}">
+        <p>${data.title}</p>
+        <p>¥${Number(data.priceRange.minVariantPrice.amount).toLocaleString()}</p>
+    </div>
+`).join("");
+document.getElementById("result").innerHTML=html;
+}
+
     </script>
 </body>
 </html>
