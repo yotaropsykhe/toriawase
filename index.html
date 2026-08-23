@@ -3,21 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>取り合わせシュミレーター｜KEICHIKU TARUMI Gallery Shop</title>
     <style>
         img{
             max-width:400px;
+            height:auto;
         }
     </style>
 </head>
              
 <body>
-    <div id="list">テスト</div>
+    <div id="vases-list">読み込み中</div>
+    <div id="plates-list">読み込み中</div>
+    <div id="bonsai-list">読み込み中</div>
     <script type="module">
     const TOKEN="06f85e997eefa31a8f8ac722bc00b634";
     const query=`
 {
-    collection(handle:"花入-一輪挿し"){
+    vases:collection(handle:"hanaire-ichirinzasi"){
+          title
+          products(first:20){
+            edges{
+                node{   
+                    title
+                    handle
+                    featuredImage{url(transform: {maxWidth:400})}
+                    priceRange{minVariantPrice{amount}}
+                }
+            }
+        }  
+    }   
+    plates:collection(handle:"shikiita-keikaboku-all"){
+          title
+          products(first:20){
+            edges{
+                node{
+                    title
+                    handle
+                    featuredImage{url(transform: {maxWidth:400})}
+                    priceRange{minVariantPrice{amount}}
+                }
+            }
+        }  
+    } 
+    bonsai:collection(handle:"bonsai-ran-sanyasou"){
           title
           products(first:20){
             edges{
@@ -30,7 +59,8 @@
             }
         }  
     }
-}    
+} 
+
 `; 
 const res = await fetch("https://keichiku-gallery.com/api/2026-07/graphql.json",{
     method:"POST",
@@ -42,9 +72,17 @@ const res = await fetch("https://keichiku-gallery.com/api/2026-07/graphql.json",
 });
 const data = await res.json();
 console.log(data);
-const edges=data.data.collection.products.edges;
-const titles=edges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
-document.getElementById("list").innerHTML=titles.join("");
+const vasesEdges=data.data.vases.products.edges;
+const vasesTitles=vasesEdges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
+document.getElementById("vases-list").innerHTML=vasesTitles.join("");
+
+const platesEdges=data.data.plates.products.edges;
+const platesTitles=platesEdges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
+document.getElementById("plates-list").innerHTML=platesTitles.join("");
+
+const bonsaiEdges=data.data.bonsai.products.edges;
+const bonsaiTitles=bonsaiEdges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
+document.getElementById("bonsai-list").innerHTML=bonsaiTitles.join("");
     </script>
 </body>
 </html>
