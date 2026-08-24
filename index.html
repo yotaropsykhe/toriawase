@@ -255,6 +255,7 @@
                 node{   
                     title
                     handle
+                    availableForSale
                 featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
                 }
@@ -268,6 +269,7 @@
                 node{
                     title
                     handle
+                    availableForSale
                     featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
                 }
@@ -281,6 +283,7 @@
                 node{
                     title
                     handle
+                    availableForSale
                     featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
                 }
@@ -310,8 +313,16 @@ const data = await res.json();
 console.log(data);
 const vasesEdges=data.data.vases.products.edges;
 const vasesTitles=vasesEdges.map((e)=>`<div> 
-    <img src="${e.node.featuredImage.url}"> ${e.node.title}
-    <p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>
+    <img src="${e.node.featuredImage.url}">
+    ${e.node.title}
+
+    ${
+        e.node.availableForSale
+    ?
+        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>`
+    :
+        `<p>売り切れ</p>`
+    }
     </div>
     `);
 
@@ -321,14 +332,34 @@ document.getElementById("vases-list").innerHTML=vasesTitles.join("");
 
 const platesEdges=data.data.plates.products.edges;
 const platesTitles=platesEdges.map((e)=>`<div> 
-    <img src="${e.node.featuredImage.url}"> ${e.node.title}
-    <p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>
+    <img src="${e.node.featuredImage.url}">
+    ${e.node.title}
+
+    ${
+        e.node.availableForSale
+    ?
+        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>`
+    :
+        `<p>売り切れ</p>`
+    }
     </div>
     `);
 document.getElementById("plates-list").innerHTML=platesTitles.join("");
 
 const bonsaiEdges=data.data.bonsai.products.edges;
-const bonsaiTitles=bonsaiEdges.map((e)=>`<div> <img src="${e.node.featuredImage.url}"> ${e.node.title}</div>`);
+const bonsaiTitles=bonsaiEdges.map((e)=>`<div> 
+    <img src="${e.node.featuredImage.url}">
+    ${e.node.title}
+
+    ${
+        e.node.availableForSale
+    ?
+        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>`
+    :
+        `<p>売り切れ</p>`
+    }
+    </div>
+    `);
 document.getElementById("bonsai-list").innerHTML=bonsaiTitles.join("");
 
 
@@ -455,8 +486,13 @@ function showResult(){
                     <p>${item.label}</p>
                     <img src="${item.data.featuredImage.url}">
                     <p>${item.data.title}</p>
-                    <p>${Number(item.data.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>
-
+                    ${
+                        item.data.availableForSale
+                    ?
+                        `<p>${Number(item.data.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>`
+                    :
+                        `<p>売り切れ</p>`
+                    }
                 
                 </div>
             `;    
