@@ -29,7 +29,7 @@
 
          header img{
             width:auto;
-            max-height:60px;
+            max-height:100px;
             aspect-ratio:1/1;
             object-fit:contain;
         }
@@ -44,7 +44,7 @@
          footer img{
             text-align: center;
             width:auto;
-            max-height:150px;
+            max-height:180px;
             aspect-ratio:1/1;
             object-fit:contain;
             margin: auto;
@@ -55,6 +55,7 @@
             letter-spacing:0.05em;
             color:var(--text-color);
             text-decoration:none;
+            margin-top:16px;
         }
 
         footer p{
@@ -311,7 +312,11 @@ const res = await fetch("https://keichiku-gallery.com/api/2026-07/graphql.json",
 
 const data = await res.json();
 console.log(data);
+
 const vasesEdges=data.data.vases.products.edges;
+if(vasesEdges.length===0){
+    document.getElementById("vases-list").innerHTML="<p>現在取り合わせ可能な商品は御座いません。</p>";
+}else{
 const vasesTitles=vasesEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
     ${e.node.title}
@@ -328,9 +333,12 @@ const vasesTitles=vasesEdges.map((e)=>`<div>
 
 
 document.getElementById("vases-list").innerHTML=vasesTitles.join("");
-
+}
 
 const platesEdges=data.data.plates.products.edges;
+if(platesEdges.length===0){
+    document.getElementById("plates-list").innerHTML="<p>現在取り合わせ可能な商品は御座いません。</p>";
+}else{
 const platesTitles=platesEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
     ${e.node.title}
@@ -345,8 +353,13 @@ const platesTitles=platesEdges.map((e)=>`<div>
     </div>
     `);
 document.getElementById("plates-list").innerHTML=platesTitles.join("");
+}
 
 const bonsaiEdges=data.data.bonsai.products.edges;
+if(bonsaiEdges.length===0){
+    document.getElementById("bonsai-list").innerHTML="<p>現在取り合わせ可能な商品は御座いません。</p>";
+}else{
+
 const bonsaiTitles=bonsaiEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
     ${e.node.title}
@@ -360,8 +373,9 @@ const bonsaiTitles=bonsaiEdges.map((e)=>`<div>
     }
     </div>
     `);
-document.getElementById("bonsai-list").innerHTML=bonsaiTitles.join("");
 
+document.getElementById("bonsai-list").innerHTML=bonsaiTitles.join("");
+}
 
 const vasesTab=document.getElementById("vases-tab");
 const platesTab=document.getElementById("plates-tab");
