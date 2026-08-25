@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>取り合わせ｜KEICHIKU TARUMI Gallery Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
 
     <style> 
         img{
@@ -27,9 +31,9 @@
             border-bottom:1px solid var(--border-color);
         }
 
-         header img{
+        header img{
             width:auto;
-            max-height:100px;
+            max-height:80px;
             aspect-ratio:1/1;
             object-fit:contain;
         }
@@ -41,7 +45,7 @@
             border-top: 1px solid var(--border-color);
         }
 
-         footer img{
+        footer img{
             text-align: center;
             width:auto;
             max-height:180px;
@@ -51,7 +55,7 @@
         }
 
         footer a{
-            font-size:17px;
+            font-size:22px;
             letter-spacing:0.05em;
             color:var(--text-color);
             text-decoration:none;
@@ -59,8 +63,9 @@
         }
 
         footer p{
-            font-size: 16px;
-            margin-top: 16px;
+            font-size: 25px;
+            margin: 16px;
+            font-weight:300;
         }
         :root{
             --font-base:'Noto Serif JP',serif;
@@ -70,9 +75,10 @@
         }
         
         body{
+            font-size:24px;
             font-family:var(--font-base);
-            line-height:18px;
-            font-weight:400;
+            line-height:1.8;
+            font-weight:300;
             color:var(--text-color);
             background:var(--bg-color);
             max-width:1200px;
@@ -81,28 +87,58 @@
         }
 
         h1{
-            font-size:24px;
-            font-weight:400;
+            font-size:26px;
+            font-weight:300;
         }
 
         h2{
             font-size:18px;
-            font-weight:400;
+            font-weight:300;
+        }
+
+        p{
+            font-size:18px;
+
         }
 
         #vases-list,
         #plates-list,
         #bonsai-list{
+
             display:grid;
             grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-            gap:24px;                
+            gap:24px;        
+            min-height:800px;        
         }
 
-        #vases-list div,
-         #plates-list div,
-         #bonsai-list div {
-            font-size:13px;
-               line-height:1.8;
+        #vases-list > div,
+        #plates-list > div,
+        #bonsai-list > div{
+            width:100%;
+            margin:0 auto;
+
+            font-size:20px;
+            line-height:1.8;
+            font-weight:300;
+        }
+
+        #vases-list div > img,
+        #plates-list div > img,
+        #bonsai-list div > img{
+            width:100%;
+            margin:0 auto 8px;   
+            
+        }
+        
+        
+        .empty-message{
+            grid-column:1/-1;
+            text-align:center;
+            width:100%;
+        }
+        .product-title{
+            min-height:3.6em;
+            margin:0 0 8px;
         }
         .selected{
             outline:1px solid var(--border-color);
@@ -119,7 +155,7 @@
         #category-tabs button{
             font-family:var(--font-base);
             font-size:18px;
-            font-weight:400;
+            font-weight:200;
             color:var(--text-color);
             background:transparent;
             border:1px solid var(--border-color);
@@ -147,41 +183,135 @@
             padding:16px;
             min-height:160px;
             box-sizing:border-box;
-            font-size:14px;
+            font-size:25px;
             line-height:1.8;
             background:#ececec;
         }
 
         .result-card p{
             margin :0 0 12px;
-            font-size:14px;
+            font-size:18px;
+
         }
 
         .result-card img{
             margin-bottom:12px;
+            width:70%;
+            height:auto;
         }
 
+        
+
         @media (max-width:768px){
+            header{
+                padding:0px 0 4px;
+            }
+
+            header img{
+                width:auto;
+                max-height:30px;
+                aspect-ratio:1/1;
+                object-fit:contain;
+                margin: 5px auto; 
+            }
+
+            footer img{
+            text-align: center;
+            width:auto;
+            max-height:120px;
+            aspect-ratio:1/1;
+            object-fit:contain;
+            margin: auto;
+        }
+
+            footer a{
+            font-size:14px;
+            letter-spacing:0.05em;
+            color:var(--text-color);
+            text-decoration:none;
+            margin-top:16px;
+        }
+
+
+            footer p{
+                font-size: 16px;
+                margin: 16px;
+            }
+
+            
+            
+            body{
+                font-size:18px;
+                font-family:var(--font-base);
+                line-height:1.8;
+                font-weight:300;
+                color:var(--text-color);
+                background:var(--bg-color);
+                max-width:1200px;
+                margin:0 auto;
+                padding:17px;
+            }
+
+            h1{
+                font-size:20px;
+                
+            }
+
+            h2{
+                font-size:14px;
+                
+            }
+        
             #vases-list,
             #plates-list,
             #bonsai-list{
                 grid-template-columns: 1fr 1fr;
-            }
-
+                min-height:400px;
+                }
+            #vases-list > div,
+            #plates-list > div,
+            #bonsai-list > div {
+                font-size:16px;
+                line-height:1.8;
+            }  
             #category-tabs{
-                grid-template-columns: 1fr;
-                gap:8px;
-            }
+                    grid-template-columns: 1fr;
+                    gap:8px;
+                }
 
             #category-tabs button{
-                padding:12px 8px;
-                font-size:12px;
-            }
-            
+                    padding:12px 8px;
+                    font-size:16px;
+                }
+                
             #result{
-                grid-template-columns: 1fr;
-                gap:12px;
+                    grid-template-columns: 1fr;
+                    gap:12px;
+                    justify-items:center;
+                }
+
+            .result-card{
+                width:60%;
+                padding:10px;
+                max-width:200px;
+                min-height:60px;
+                box-sizing:border-box;
+                font-size:14px;
+            
             }
+
+            .result-card img{
+                width:100%;
+                height:auto;
+                max-height:240px;
+                object-fit:contain;
+                margin:auto;
+            }
+
+            .result-card p{
+                margin :0 0 12px;
+                font-size:14px;
+            }    
         }
             
 
@@ -198,7 +328,7 @@
     </header>
 
     <main>
-        <h1>取り合わせ</h1>
+        <h1>お取り合わせ</h1>
 
         <p>器・敷板・草木の組み合わせをお試しいただけます。</p>
 
@@ -235,6 +365,8 @@
 
         <h2>選択した取り合わせ</h2>
         <div id="result">選択されていません</div>
+
+        <p id="total-price">合計金額: 0 円</p>
     </main>
 
     <footer>
@@ -313,18 +445,19 @@ const res = await fetch("https://keichiku-gallery.com/api/2026-07/graphql.json",
 const data = await res.json();
 console.log(data);
 
-const vasesEdges=data.data.vases.products.edges;
+const vasesEdges=data.data.vases?.products.edges??[];
 if(vasesEdges.length===0){
-    document.getElementById("vases-list").innerHTML="<p>現在取り合わせ可能な商品は御座いません。</p>";
+    document.getElementById("vases-list").innerHTML=`<p class="empty-message">現在取り合わせ可能な商品は御座いません。</p>`;
 }else{
 const vasesTitles=vasesEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
+    <p class ="product-title">
     ${e.node.title}
-
+    </p>
     ${
         e.node.availableForSale
     ?
-        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>`
+        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円(税込) </p>`
     :
         `<p>売り切れ</p>`
     }
@@ -335,18 +468,19 @@ const vasesTitles=vasesEdges.map((e)=>`<div>
 document.getElementById("vases-list").innerHTML=vasesTitles.join("");
 }
 
-const platesEdges=data.data.plates.products.edges;
+const platesEdges=data.data.plates?.products.edges??[];
 if(platesEdges.length===0){
-    document.getElementById("plates-list").innerHTML="<p>現在取り合わせ可能な商品は御座いません。</p>";
+    document.getElementById("plates-list").innerHTML=`<p class="empty-message">現在取り合わせ可能な商品は御座いません。</p>`;
 }else{
 const platesTitles=platesEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
+    <p class ="product-title">
     ${e.node.title}
-
+    </p>
     ${
         e.node.availableForSale
     ?
-        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円 </p>`
+        `<p>${Number(e.node.priceRange.minVariantPrice.amount).toLocaleString()}円(税込) </p>`
     :
         `<p>売り切れ</p>`
     }
@@ -355,15 +489,16 @@ const platesTitles=platesEdges.map((e)=>`<div>
 document.getElementById("plates-list").innerHTML=platesTitles.join("");
 }
 
-const bonsaiEdges=data.data.bonsai.products.edges;
+const bonsaiEdges=data.data.bonsai?.products.edges ??[];
 if(bonsaiEdges.length===0){
-    document.getElementById("bonsai-list").innerHTML="<p>現在取り合わせ可能な商品は御座いません。</p>";
+    document.getElementById("bonsai-list").innerHTML=`<p class="empty-message">現在取り合わせ可能な商品は御座いません。</p>`;
 }else{
 
 const bonsaiTitles=bonsaiEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
+    <p class ="product-title">
     ${e.node.title}
-
+    </p>
     ${
         e.node.availableForSale
     ?
@@ -513,6 +648,18 @@ function showResult(){
         }).join("");
 
         document.getElementById("result").innerHTML=html;
+
+        let totalPrice=0;
+        if(selectedVaseData && selectedVaseData.availableForSale){
+            totalPrice+=Number(selectedVaseData.priceRange.minVariantPrice.amount);
+        }
+        if(selectedPlateData && selectedPlateData.availableForSale){
+            totalPrice+=Number(selectedPlateData.priceRange.minVariantPrice.amount);
+        }
+        if(selectedBonsaiData && selectedBonsaiData.availableForSale){
+            totalPrice+=Number(selectedBonsaiData.priceRange.minVariantPrice.amount);
+        }
+        document.getElementById("total-price").textContent=`合計金額: ${totalPrice.toLocaleString()} 円`;
     }
     showResult();
 
