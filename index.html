@@ -27,13 +27,13 @@
 
         header{
             text-align:center;
-            padding:24px;
+            padding:2px 0 6px;
             border-bottom:1px solid var(--border-color);
         }
 
         header img{
             width:auto;
-            max-height:80px;
+            max-height:60px;
             aspect-ratio:1/1;
             object-fit:contain;
         }
@@ -55,7 +55,7 @@
         }
 
         footer a{
-            font-size:22px;
+            font-size:18px;
             letter-spacing:0.05em;
             color:var(--text-color);
             text-decoration:none;
@@ -63,7 +63,7 @@
         }
 
         footer p{
-            font-size: 25px;
+            font-size: 18px;
             margin: 16px;
             font-weight:300;
         }
@@ -204,7 +204,11 @@
 
         @media (max-width:768px){
             header{
-                padding:0px 0 4px;
+                padding:2px 0 4px;
+                position:sticky;
+                top:0;
+                z-index:1000;
+                background:var(--bg-color);
             }
 
             header img{
@@ -234,7 +238,7 @@
 
 
             footer p{
-                font-size: 16px;
+                font-size: 14px;
                 margin: 16px;
             }
 
@@ -274,6 +278,13 @@
                 font-size:16px;
                 line-height:1.8;
             }  
+
+            #vases-list > div  >p:last-child,
+            #plates-list > div >p:last-child,
+            #bonsai-list > div >p:last-child {
+                font-size:14px;
+                white-space:nowrap;
+            }  
             #category-tabs{
                     grid-template-columns: 1fr;
                     gap:8px;
@@ -311,8 +322,14 @@
             .result-card p{
                 margin :0 0 12px;
                 font-size:14px;
-            }    
+            }
+            
+            .product-title{
+                min-height:5.4em;
+               
+            }
         }
+
             
 
 
