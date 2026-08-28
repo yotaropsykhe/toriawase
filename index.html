@@ -132,7 +132,7 @@
         
         
         .empty-message{
-            grid-column:1/-1;
+            grid-column:1/-1; 
             text-align:center;
             width:100%;
         }
@@ -141,9 +141,26 @@
             margin:0 0 8px;
         }
         .selected{
-            outline:1px solid var(--border-color);
-            outline-offset:8px;
+            position:relative;
+            outline:none;
         }  
+
+        .selected img{
+            opacity:0.55;
+            transition:opacity 0.3s ease;
+        }
+
+        .selected:after{
+            content:"選択中";
+            position:absolute;
+            top:12px;
+            right:12px;
+            padding:4px 8px;
+            font-size:10px;
+            background:rgba(255,255,255,0.85);
+            border:0.5px solid var(--border-color);
+
+        }
 
         #category-tabs{
             display:grid;
@@ -199,6 +216,33 @@
             width:70%;
             height:auto;
         }
+
+        #total-price{
+            font-weight:200;
+        }
+
+        #cart-button{
+                display;:block;
+                width:100%;
+                max-width:400px;
+                margin:24px auto 0;
+                padding:14px 16px;
+                font-family:var(--font-base);
+                font-size:14px;
+                font-weight:200;
+                letter-spacing:0.05em;
+                color:var(--text-color);
+                background:transparent;
+                border:1px solid var(--border-color);
+
+                cursor:pointer;
+                transition:background 0.3s ease;;
+            }
+
+            #cart-button:hover{
+                background: #d1d7d0;
+   
+            }
 
         
 
@@ -263,18 +307,22 @@
 
             h2{
                 font-size:14px;
-                
             }
         
             #vases-list,
             #plates-list,
             #bonsai-list{
-                grid-template-columns: 1fr 1fr;
-                min-height:400px;
+                display:flex;
+                overflow-x:auto;
+                gap:12px;
+                min-height:260px;
+                padding-bottom:10px;
                 }
+
             #vases-list > div,
             #plates-list > div,
             #bonsai-list > div {
+                flex:0 0 160px;
                 font-size:16px;
                 line-height:1.8;
             }  
@@ -328,6 +376,18 @@
                 min-height:5.4em;
                
             }
+            
+            #total-price{
+                font-size:16px;
+            }
+
+            #cart-button{
+                max-width:320px;
+                padding:12px 16px;
+                font-size:12px;
+            }
+
+        
         }
 
             
@@ -384,6 +444,8 @@
         <div id="result">選択されていません</div>
 
         <p id="total-price">合計金額: 0 円</p>
+     
+    <button id="cart-button" type="button">選択した商品をカートに追加</button>  
     </main>
 
     <footer>
@@ -393,7 +455,7 @@
     </footer>
 
 
-
+    <!--//以下GraphQ -->
     <script type="module">
     const TOKEN="06f85e997eefa31a8f8ac722bc00b634";
     const query=`
@@ -406,9 +468,17 @@
                     title
                     handle
                     availableForSale
-                featuredImage{url(transform: {maxWidth:400})}
+                    featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
-                }
+
+                    variants(first:1){
+                        edges{
+                            node{
+                                id
+                            }
+                        }
+                    }            
+                }   
             }
         }  
     }   
@@ -422,6 +492,14 @@
                     availableForSale
                     featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
+
+                    variants(first:1){
+                        edges{
+                            node{
+                                id
+                            }
+                        }   
+                    }
                 }
             }
         }  
@@ -436,6 +514,14 @@
                     availableForSale
                     featuredImage{url(transform: {maxWidth:400})}
                     priceRange{minVariantPrice{amount}}
+
+                    variants(first:1){
+                        edges{
+                            node{
+                                id
+                            }
+                        }   
+                    }
                 }
             }
         }  
@@ -582,6 +668,10 @@ vasesItems.forEach((item,index)=>{
         selectedVaseItem=item;
         selectedVaseData=vasesEdges[index].node;
         console.log(selectedVaseData.title);
+        console.log(selectedVaseData.variants.edges[0].node.id);
+        const vaseVariantId=selectedVaseData.variants.edges[0].node.id.split("/").pop();
+
+        console.log(vaseVariantId);
         showResult();
     });
 });
@@ -599,6 +689,7 @@ platesItems.forEach((item,index)=>{
         selectedPlateItem=item;
         selectedPlateData=platesEdges[index].node;
         console.log(selectedPlateData.title);
+        console.log(selectedPlateData.variants.edges[0].node.id);
         showResult();
     });
 });
@@ -614,8 +705,7 @@ bonsaiItems.forEach((item,index)=>{
         }
         item.classList.add("selected");
         selectedBonsaiItem=item;
-        selectedBonsaiData=bonsaiEdges[index].node;
-        console.log(selectedBonsaiData.title);
+        selectedBonsaiData=bonsaiEdges[index].node;z
         showResult();
     });
 });
@@ -680,10 +770,32 @@ function showResult(){
     }
     showResult();
 
+    const cartButton=document.getElementById("cart-button");
+    cartButton.addEventListener("click",()=>{
+        const selectionItems=[
+            selectedVaseData,
+            selectedPlateData,
+            selectedBonsaiData
+        ].filter((item)=>item!==null);
+
+        if (selectionItems.length===0){
+            alert("商品を選択してください");
+            return;
+    }
+
+        const cartItems=selectionItems.map((item)=>{
+            const variantId=item.variants.edges[0].node.id.split("/").pop();
+            return `${variantId}:1`;
+        }).join(",");
+
+        const cartUrl=`https://keichiku-gallery.com/cart/${cartItems}?storefront=true`;
+        window.location.href=cartUrl;
+    });
+
 const savedScrollPosition=
-    sessionStorage.getItem("scrollPosition");    
-if(savedScrollPosition !== null){
-    window.scrollTo(0,Number(savedScrollPosition));
+        sessionStorage.getItem("scrollPosition");    
+    if(savedScrollPosition !== null){
+        window.scrollTo(0,Number(savedScrollPosition));
 }
 
 
