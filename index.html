@@ -102,7 +102,7 @@
         }
 
         #vases-list,
-        #plates-list,
+        #lifestyle-list,
         #bonsai-list{
 
             display:grid;
@@ -112,7 +112,7 @@
         }
 
         #vases-list > div,
-        #plates-list > div,
+        #lifestyle-list > div,
         #bonsai-list > div{
             width:100%;
             margin:0 auto;
@@ -123,7 +123,7 @@
         }
 
         #vases-list div > img,
-        #plates-list div > img,
+        #lifestyle-list div > img,
         #bonsai-list div > img{
             width:100%;
             margin:0 auto 8px;   
@@ -222,7 +222,7 @@
         }
 
         #cart-button{
-                display;:block;
+                display:block;
                 width:100%;
                 max-width:400px;
                 margin:24px auto 0;
@@ -310,7 +310,7 @@
             }
         
             #vases-list,
-            #plates-list,
+            #lifestyle-list,
             #bonsai-list{
                 display:flex;
                 overflow-x:auto;
@@ -320,7 +320,7 @@
                 }
 
             #vases-list > div,
-            #plates-list > div,
+            #lifestyle-list > div,
             #bonsai-list > div {
                 flex:0 0 160px;
                 font-size:16px;
@@ -328,7 +328,7 @@
             }  
 
             #vases-list > div  >p:last-child,
-            #plates-list > div >p:last-child,
+            #lifestyle-list > div >p:last-child,
             #bonsai-list > div >p:last-child {
                 font-size:14px;
                 white-space:nowrap;
@@ -407,15 +407,15 @@
     <main>
         <h1>お取り合わせ</h1>
 
-        <p>器・敷板・草木の組み合わせをお試しいただけます。</p>
+        <p>器・暮らしのアイテム・草木の組み合わせをお試しいただけます。</p>
 
     <div id="category-tabs">
         <button id="vases-tab" class="active" type="button">
             花器・一輪挿し
         </button>
 
-        <button id="plates-tab" type="button">
-            敷板
+        <button id="lifestyle-tab" type="button">
+            暮らしのアイテム
         </button>
 
         <button id="bonsai-tab" type="button">
@@ -430,9 +430,9 @@
         <div id="vases-list">読み込み中</div>
     </section>  
     
-    <section id="plates-section" class="hidden">
-        <h2>敷板を選ぶ</h2>
-        <div id="plates-list">読み込み中</div>
+    <section id="lifestyle-section" class="hidden">
+        <h2>暮らしのアイテムを選ぶ</h2>
+        <div id="lifestyle-list">読み込み中</div>
     </section>    
 
     <section id="bonsai-section" class="hidden">
@@ -482,7 +482,7 @@
             }
         }  
     }   
-    plates:collection(handle:"shikiita-keikaboku-all"){
+    lifestyle:collection(handle:"lifestyle-product"){
           title
           products(first:20){
             edges{
@@ -571,11 +571,11 @@ const vasesTitles=vasesEdges.map((e)=>`<div>
 document.getElementById("vases-list").innerHTML=vasesTitles.join("");
 }
 
-const platesEdges=data.data.plates?.products.edges??[];
-if(platesEdges.length===0){
-    document.getElementById("plates-list").innerHTML=`<p class="empty-message">現在取り合わせ可能な商品は御座いません。</p>`;
+const lifestyleEdges=data.data.lifestyle?.products.edges??[];
+if(lifestyleEdges.length===0){
+    document.getElementById("lifestyle-list").innerHTML=`<p class="empty-message">現在取り合わせ可能な商品は御座いません。</p>`;
 }else{
-const platesTitles=platesEdges.map((e)=>`<div> 
+const lifestyleTitles=lifestyleEdges.map((e)=>`<div> 
     <img src="${e.node.featuredImage.url}">
     <p class ="product-title">
     ${e.node.title}
@@ -589,7 +589,7 @@ const platesTitles=platesEdges.map((e)=>`<div>
     }
     </div>
     `);
-document.getElementById("plates-list").innerHTML=platesTitles.join("");
+document.getElementById("lifestyle-list").innerHTML=lifestyleTitles.join("");
 }
 
 const bonsaiEdges=data.data.bonsai?.products.edges ??[];
@@ -616,41 +616,41 @@ document.getElementById("bonsai-list").innerHTML=bonsaiTitles.join("");
 }
 
 const vasesTab=document.getElementById("vases-tab");
-const platesTab=document.getElementById("plates-tab");
+const lifestyleTab=document.getElementById("lifestyle-tab");
 const bonsaiTab=document.getElementById("bonsai-tab");
 
 const vasesSection=document.getElementById("vases-section");
-const platesSection=document.getElementById("plates-section");
+const lifestyleSection=document.getElementById("lifestyle-section");
 const bonsaiSection=document.getElementById("bonsai-section");
 
 vasesTab.addEventListener("click",()=>{
     vasesSection.classList.remove("hidden");
-    platesSection.classList.add("hidden");
+    lifestyleSection.classList.add("hidden");
     bonsaiSection.classList.add("hidden");
 
     vasesTab.classList.add("active");
-    platesTab.classList.remove("active");
+    lifestyleTab.classList.remove("active");
     bonsaiTab.classList.remove("active");
 
 });
 
-platesTab.addEventListener("click",()=>{
+lifestyleTab.addEventListener("click",()=>{
     vasesSection.classList.add("hidden");
-    platesSection.classList.remove("hidden");
+    lifestyleSection.classList.remove("hidden");
     bonsaiSection.classList.add("hidden");
 
     vasesTab.classList.remove("active");
-    platesTab.classList.add("active");
+    lifestyleTab.classList.add("active");
     bonsaiTab.classList.remove("active");
 });
 
 bonsaiTab.addEventListener("click",()=>{
     vasesSection.classList.add("hidden");
-    platesSection.classList.add("hidden");
+    lifestyleSection.classList.add("hidden");
     bonsaiSection.classList.remove("hidden");
 
     vasesTab.classList.remove("active");
-    platesTab.classList.remove("active");
+    lifestyleTab.classList.remove("active");
     bonsaiTab.classList.add("active");
 });
 
@@ -676,20 +676,20 @@ vasesItems.forEach((item,index)=>{
     });
 });
 
-let selectedPlateItem=null; //HTML要素
-let selectedPlateData=null; //商品データ
+let selectedLifestyleItem=null; //HTML要素
+let selectedLifestyleData=null; //商品データ
 
-const platesItems=document.querySelectorAll("#plates-list div");
-platesItems.forEach((item,index)=>{
+const lifestyleItems=document.querySelectorAll("#lifestyle-list div");
+lifestyleItems.forEach((item,index)=>{
     item.addEventListener("click",()=>{
-        if(selectedPlateItem){
-            selectedPlateItem.classList.remove("selected");
+        if(selectedLifestyleItem){
+            selectedLifestyleItem.classList.remove("selected");
         }
         item.classList.add("selected");
-        selectedPlateItem=item;
-        selectedPlateData=platesEdges[index].node;
-        console.log(selectedPlateData.title);
-        console.log(selectedPlateData.variants.edges[0].node.id);
+        selectedLifestyleItem=item;
+        selectedLifestyleData=lifestyleEdges[index].node;
+        console.log(selectedLifestyleData.title);
+        console.log(selectedLifestyleData.variants.edges[0].node.id);
         showResult();
     });
 });
@@ -705,7 +705,7 @@ bonsaiItems.forEach((item,index)=>{
         }
         item.classList.add("selected");
         selectedBonsaiItem=item;
-        selectedBonsaiData=bonsaiEdges[index].node;z
+        selectedBonsaiData=bonsaiEdges[index].node;
         showResult();
     });
 });
@@ -717,8 +717,8 @@ function showResult(){
         },
 
         {
-            label:"敷板",
-            data:selectedPlateData
+            label:"暮らしのアイテム",
+            data:selectedLifestyleData
         },
 
         {
@@ -760,8 +760,8 @@ function showResult(){
         if(selectedVaseData && selectedVaseData.availableForSale){
             totalPrice+=Number(selectedVaseData.priceRange.minVariantPrice.amount);
         }
-        if(selectedPlateData && selectedPlateData.availableForSale){
-            totalPrice+=Number(selectedPlateData.priceRange.minVariantPrice.amount);
+        if(selectedLifestyleData && selectedLifestyleData.availableForSale){
+            totalPrice+=Number(selectedLifestyleData.priceRange.minVariantPrice.amount);
         }
         if(selectedBonsaiData && selectedBonsaiData.availableForSale){
             totalPrice+=Number(selectedBonsaiData.priceRange.minVariantPrice.amount);
@@ -774,7 +774,7 @@ function showResult(){
     cartButton.addEventListener("click",()=>{
         const selectionItems=[
             selectedVaseData,
-            selectedPlateData,
+            selectedLifestyleData,
             selectedBonsaiData
         ].filter((item)=>item!==null);
 
